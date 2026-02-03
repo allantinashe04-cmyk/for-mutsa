@@ -1,0 +1,211 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Valentine for Mutsa</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      overflow: hidden;
+    }
+
+    .page {
+      display: none;
+      text-align: center;
+      background: white;
+      padding: 40px 50px;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      max-width: 420px;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* PAGE 2 DIFFERENT LOOK */
+    #page2 {
+      background: linear-gradient(135deg, #1d2671, #c33764);
+      color: white;
+    }
+
+    #page2 h1,
+    #page2 p {
+      color: white;
+    }
+
+    h1 {
+      color: #ff4d6d;
+      font-size: 2.4em;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.2em;
+      color: #444;
+    }
+
+    img.gif {
+      width: 220px;
+      border-radius: 15px;
+      margin: 15px 0;
+    }
+
+    .buttons {
+      margin-top: 25px;
+      position: relative;
+      height: 80px;
+    }
+
+    button {
+      font-size: 1.1em;
+      padding: 12px 25px;
+      margin: 10px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    #yes {
+      background-color: #ff4d6d;
+      color: white;
+    }
+
+    #yes:hover {
+      transform: scale(1.1);
+    }
+
+    #no {
+      background-color: #ddd;
+      color: #333;
+      position: absolute;
+    }
+
+    .countdown {
+      font-size: 1.4em;
+      margin-top: 20px;
+      color: #ffd6e0;
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 24px;
+      animation: float 4s linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes float {
+      from {
+        transform: translateY(0);
+        opacity: 0.7;
+      }
+      to {
+        transform: translateY(-600px);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE 1 -->
+  <div class="page active" id="page1">
+    <h1>Will you be my Valentine, Mutsa? 💖</h1>
+
+    <!-- CUTE GIF PAGE 1 -->
+    <img class="gif"
+      src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif"
+      alt="cute love gif">
+
+    <p>You'd make this Valentine's Day extra special ✨</p>
+
+    <div class="buttons">
+      <button id="yes" onclick="yesClicked()">Yes 💕</button>
+      <button id="no" onmouseover="moveNo()">No 🙈</button>
+    </div>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="page" id="page2">
+    <h1>You've made the best decision ever 😌💘</h1>
+
+    <!-- CUTE GIF PAGE 2 -->
+    <img class="gif"
+      src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif"
+      alt="romantic gif">
+
+    <p>See you on the 14th 💖</p>
+    <div class="countdown" id="countdown"></div>
+  </div>
+
+  <script>
+    function yesClicked() {
+      alert("YAY!!! 💖 I'm the luckiest person ever 😍");
+      createHearts();
+
+      setTimeout(() => {
+        document.getElementById("page1").classList.remove("active");
+        document.getElementById("page2").classList.add("active");
+        startCountdown();
+      }, 300);
+    }
+
+    function moveNo() {
+      const noBtn = document.getElementById("no");
+      const x = Math.random() * (window.innerWidth - 100);
+      const y = Math.random() * (window.innerHeight - 50);
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    }
+
+    function createHearts() {
+      for (let i = 0; i < 20; i++) {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "💖";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.top = window.innerHeight + "px";
+        heart.style.animationDuration = (2 + Math.random() * 3) + "s";
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 5000);
+      }
+    }
+
+    function startCountdown() {
+      const countdownEl = document.getElementById("countdown");
+      const now = new Date();
+      let year = now.getFullYear();
+      const valentinesDay = new Date(year, 1, 14);
+
+      if (now > valentinesDay) {
+        valentinesDay.setFullYear(year + 1);
+      }
+
+      function updateCountdown() {
+        const current = new Date();
+        const diff = valentinesDay - current;
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        countdownEl.innerHTML =
+          `${days} days ${hours} hours ${minutes} minutes ${seconds} seconds 💕`;
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    }
+  </script>
+
+</body>
+</html>
